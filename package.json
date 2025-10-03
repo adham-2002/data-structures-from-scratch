@@ -6,6 +6,7 @@
     "scripts": {
         "start:array": "ts-node 01-Array-Implementation/index.ts",
         "start:linkedlist": "ts-node \"02-Singly Linked List/index.ts\"",
+        "start:dlinkedlist": "ts-node \"03-Doubly Linked List/index.ts\"",
         "build": "tsc"
     },
     "keywords": [],
