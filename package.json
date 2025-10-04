@@ -7,6 +7,8 @@
         "start:array": "ts-node 01-Array-Implementation/index.ts",
         "start:linkedlist": "ts-node \"02-Singly Linked List/index.ts\"",
         "start:dlinkedlist": "ts-node \"03-Doubly Linked List/index.ts\"",
+        "start:linkedstack": "ts-node \"04  -Stack/index.ts\"",
+        "start:arraystack": "ts-node \"05-Stack/ArrayStack.ts\"",
         "build": "tsc"
     },
     "keywords": [],
