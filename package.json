@@ -9,6 +9,7 @@
         "start:dlinkedlist": "ts-node \"03-Doubly Linked List/index.ts\"",
         "start:linkedstack": "ts-node \"04  -Stack/index.ts\"",
         "start:arraystack": "ts-node \"05-Stack/ArrayStack.ts\"",
+        "start:queuestack": "ts-node \"06-Queue with Linked List/index.ts\"",
         "build": "tsc"
     },
     "keywords": [],
