@@ -10,6 +10,8 @@
         "start:linkedstack": "ts-node \"04  -Stack/index.ts\"",
         "start:arraystack": "ts-node \"05-Stack/ArrayStack.ts\"",
         "start:queuestack": "ts-node \"06-Queue with Linked List/index.ts\"",
+        "start:keyValue": "ts-node \"07-Key-Value-Store/index.ts\"",
+        "start:hashmap": "ts-node \"08-FNV-1a-Implementation/index.ts\"",
         "build": "tsc"
     },
     "keywords": [],
