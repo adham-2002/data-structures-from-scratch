@@ -12,6 +12,7 @@
         "start:queuestack": "ts-node \"06-Queue with Linked List/index.ts\"",
         "start:keyValue": "ts-node \"07-Key-Value-Store/index.ts\"",
         "start:hashmap": "ts-node \"08-FNV-1a-Implementation/index.ts\"",
+        "start:hashtable": "ts-node \"09-implement-hashTable/index.ts\"",
         "build": "tsc"
     },
     "keywords": [],
