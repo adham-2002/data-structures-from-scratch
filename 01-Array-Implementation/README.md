@@ -51,6 +51,7 @@ classDiagram
 # 📊 Diagrams
 
 ```mermaid
+
 # ⚡ Operations / Functions / API
 
       +pop()

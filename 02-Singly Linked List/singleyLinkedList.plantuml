@@ -1,0 +1,373 @@
+@startuml Singly Linked List Class Diagram
+
+!theme plain
+skinparam classAttributeIconSize 0
+skinparam classFontSize 12
+skinparam classBackgroundColor #E8F4F8
+skinparam classHeaderBackgroundColor #4A90E2
+
+' Title
+title Singly Linked List - Class Diagram
+
+' Node Class
+class "ListNode<T>" as ListNode {
+  - data: T
+  - next: ListNode<T> | null
+  __
+  + constructor(data: T)
+}
+
+' Interface
+interface "ILinkedList<T>" as ILinkedList {
+  {abstract} + insertAtHead(data: T): void
+  {abstract} + insertAtTail(data: T): void
+  {abstract} + insertAtPosition(data: T, position: number): boolean
+  {abstract} + delete(data: T): boolean
+  {abstract} + deleteAtHead(): boolean
+  {abstract} + deleteAtTail(): boolean
+  {abstract} + search(data: T): boolean
+  {abstract} + getAt(position: number): T | null
+  {abstract} + size(): number
+  {abstract} + isEmpty(): boolean
+  {abstract} + toArray(): T[]
+  {abstract} + reverse(): void
+  {abstract} + clear(): void
+}
+
+' LinkedList Class
+class "LinkedList<T>" as LinkedList {
+  - head: ListNode<T> | null
+  - count: number
+  __
+  - createNode(data: T): ListNode<T>
+  - isValidPosition(position: number): boolean
+  - getNodeAt(position: number): ListNode<T> | null
+  __
+  + insertAtHead(data: T): void
+  + insertAtTail(data: T): void
+  + insertAtPosition(data: T, position: number): boolean
+  + delete(data: T): boolean
+  + deleteAtHead(): boolean
+  + deleteAtTail(): boolean
+  + search(data: T): boolean
+  + getAt(position: number): T | null
+  + size(): number
+  + isEmpty(): boolean
+  + toArray(): T[]
+  + reverse(): void
+  + clear(): void
+  + toString(): string
+}
+
+' Relationships
+LinkedList ..|> ILinkedList : implements
+LinkedList o-- ListNode : contains
+ListNode --> ListNode : next
+
+' Notes
+note right of LinkedList
+  **Key Features:**
+  • O(1) head insertions/deletions
+  • O(n) tail operations
+  • O(n) search/access by index
+  • Dynamic size, no pre-allocation
+  • Sequential traversal only
+end note
+
+note left of ListNode
+  Each node stores:
+  • Data value (generic type T)
+  • Reference to next node
+  • Last node: next = null
+end note
+
+@enduml
+
+@startuml Linked List Structure Visualization
+
+!theme plain
+skinparam backgroundColor #FEFEFE
+skinparam rectangleFontSize 14
+skinparam rectangleBackgroundColor #E3F2FD
+skinparam rectangleBorderColor #1976D2
+skinparam arrowColor #1976D2
+
+title Singly Linked List - Memory Structure
+
+' Visual representation of a linked list
+package "LinkedList Object" {
+  rectangle "head: •" as head #FFE0B2
+  rectangle "count: 4" as count #FFE0B2
+}
+
+' Nodes
+rectangle "Node 1\n─────\ndata: 10\nnext: •" as node1 #E3F2FD
+rectangle "Node 2\n─────\ndata: 20\nnext: •" as node2 #E3F2FD
+rectangle "Node 3\n─────\ndata: 30\nnext: •" as node3 #E3F2FD
+rectangle "Node 4\n─────\ndata: 40\nnext: ∅" as node4 #C8E6C9
+
+' Connections
+head -right-> node1 : points to
+node1 -right-> node2
+node2 -right-> node3
+node3 -right-> node4
+node4 -right-> null : null
+
+note bottom of node1
+  First node
+  (head points here)
+end note
+
+note bottom of node4
+  Last node
+  (next = null)
+end note
+
+@enduml
+
+@startuml Insert At Head Operation
+
+!theme plain
+skinparam backgroundColor #FEFEFE
+title Insert At Head - Step by Step
+
+|Before|
+:Current List;
+rectangle "head → [10] → [20] → [30] → ∅" as before
+
+|#LightBlue|Step 1: Create New Node|
+:Create new node with data = 5;
+rectangle "newNode = [5 | null]" as newNode1
+
+|#LightGreen|Step 2: Link New Node|
+:newNode.next = head;
+rectangle "newNode = [5 | •] → [10] → [20] → [30] → ∅" as link
+
+|#Yellow|Step 3: Update Head|
+:head = newNode;
+rectangle "head → [5] → [10] → [20] → [30] → ∅" as after
+
+|#Orange|Step 4: Increment Count|
+:count++;
+note right
+  Time Complexity: O(1)
+  All steps are constant time!
+end note
+
+@enduml
+
+@startuml Insert At Tail Operation
+
+!theme plain
+title Insert At Tail - Step by Step
+
+|Before|
+:Current List;
+rectangle "head → [10] → [20] → [30] → ∅" as before
+
+|#LightBlue|Step 1: Create New Node|
+:Create new node with data = 40;
+rectangle "newNode = [40 | null]" as newNode1
+
+|#Yellow|Step 2: Traverse to End|
+:Find last node (current.next == null);
+rectangle "current → [30 | null]" as traverse
+note right
+  O(n) operation
+  Must traverse entire list
+end note
+
+|#LightGreen|Step 3: Link New Node|
+:current.next = newNode;
+rectangle "head → [10] → [20] → [30] → [40] → ∅" as after
+
+|#Orange|Step 4: Increment Count|
+:count++;
+
+@enduml
+
+@startuml Delete Operation
+
+!theme plain
+title Delete Node - Step by Step
+
+|Before|
+:Delete value 20;
+rectangle "head → [10] → [20] → [30] → ∅" as before
+
+|#LightBlue|Step 1: Find Node|
+:Traverse until current.next.data == 20;
+rectangle "current → [10]\ncurrent.next → [20]" as find
+
+|#Yellow|Step 2: Unlink Node|
+:current.next = current.next.next;
+rectangle "head → [10] ┐\n              ↓\n         [20] [30] → ∅" as unlink
+note right
+  Node [20] is now
+  unreachable and will
+  be garbage collected
+end note
+
+|#LightGreen|Step 3: Final State|
+:After deletion;
+rectangle "head → [10] → [30] → ∅" as after
+
+|#Orange|Step 4: Decrement Count|
+:count--;
+note right
+  Time Complexity: O(n)
+  Must search for node
+end note
+
+@enduml
+
+@startuml Reverse Operation
+
+!theme plain
+title Reverse Linked List - Algorithm
+
+|Before|
+:Original List;
+rectangle "head → [1] → [2] → [3] → [4] → ∅" as original
+
+|#LightBlue|Initialize|
+:prev = null\ncurrent = head\nnext = null;
+
+|#Yellow|Iteration 1|
+rectangle "prev: null\ncurrent: [1]\nnext: [2]" as iter1
+:Reverse pointer: [1].next = null;
+
+|#LightGreen|Iteration 2|
+rectangle "prev: [1]\ncurrent: [2]\nnext: [3]" as iter2
+:Reverse pointer: [2].next = [1];
+
+|#Cyan|Iteration 3|
+rectangle "prev: [2] → [1]\ncurrent: [3]\nnext: [4]" as iter3
+:Reverse pointer: [3].next = [2];
+
+|#Magenta|Iteration 4|
+rectangle "prev: [3] → [2] → [1]\ncurrent: [4]\nnext: null" as iter4
+:Reverse pointer: [4].next = [3];
+
+|#Orange|Final|
+:head = prev;
+rectangle "head → [4] → [3] → [2] → [1] → ∅" as final
+note right
+  Time: O(n)
+  Space: O(1)
+  In-place reversal
+end note
+
+@enduml
+
+@startuml Use Cases
+
+!theme plain
+title Singly Linked List - Use Cases
+
+usecase "Implement Stack\n(LIFO)" as UC1 #E3F2FD
+usecase "Implement Queue\n(FIFO)" as UC2 #E3F2FD
+usecase "Undo Functionality" as UC3 #E8F5E9
+usecase "Music Playlist" as UC4 #FFF9C4
+usecase "Browser History" as UC5 #FFE0B2
+usecase "Hash Table\nChaining" as UC6 #F3E5F5
+usecase "Polynomial\nRepresentation" as UC7 #E0F2F1
+usecase "Memory\nAllocation" as UC8 #FCE4EC
+
+actor "Developer" as dev
+
+dev --> UC1
+dev --> UC2
+dev --> UC3
+dev --> UC4
+dev --> UC5
+dev --> UC6
+dev --> UC7
+dev --> UC8
+
+note right of UC1
+  O(1) insertions at head
+  Perfect for stack push/pop
+end note
+
+note right of UC6
+  Handle hash collisions
+  Multiple values per bucket
+end note
+
+@enduml
+
+@startuml Complexity Comparison
+
+!theme plain
+title Time Complexity Comparison
+
+|Data Structure|Operation|Complexity|
+|Singly Linked List|Insert at Head|**O(1)**|
+|Array|Insert at Head|O(n)|
+|Singly Linked List|Insert at Tail|O(n)|
+|Array|Insert at Tail|O(1)*|
+|Singly Linked List|Delete at Head|**O(1)**|
+|Array|Delete at Head|O(n)|
+|Singly Linked List|Search|O(n)|
+|Array|Search|O(n)|
+|Singly Linked List|Access by Index|O(n)|
+|Array|Access by Index|**O(1)**|
+|Singly Linked List|Space|O(n)|
+|Array|Space|O(n)|
+
+note right
+  * Amortized O(1) for dynamic arrays
+  
+  **Key Takeaway:**
+  • Linked Lists excel at head operations
+  • Arrays excel at random access
+  • Choose based on access patterns
+end note
+
+@enduml
+
+@startuml State Diagram
+
+!theme plain
+title Linked List State Transitions
+
+state "Empty List" as Empty {
+  [*] --> Empty : new LinkedList()
+  Empty : head = null
+  Empty : count = 0
+}
+
+state "Single Node" as Single {
+  Single : head → [data]
+  Single : count = 1
+}
+
+state "Multiple Nodes" as Multiple {
+  Multiple : head → [n1] → [n2] → ... → [nk]
+  Multiple : count = k (k > 1)
+}
+
+[*] --> Empty
+
+Empty --> Single : insertAtHead(data)\ninsertAtTail(data)
+Single --> Multiple : insertAtHead(data)\ninsertAtTail(data)\ninsertAtPosition(data, pos)
+Single --> Empty : deleteAtHead()\ndeleteAtTail()\ndelete(data)\nclear()
+
+Multiple --> Multiple : insert operations\ndelete operations
+Multiple --> Single : delete until\none node remains
+Multiple --> Empty : clear()
+
+Empty --> Empty : delete operations\n(no effect)
+
+note right of Empty
+  Initial state and
+  after clearing all nodes
+end note
+
+note bottom of Multiple
+  Most common state
+  during list usage
+end note
+
+@enduml
